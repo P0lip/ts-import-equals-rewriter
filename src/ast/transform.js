@@ -19,13 +19,15 @@ export default source => {
   for (const [i, node] of body.entries()) {
     switch (node.type) {
       case 'TSImportEqualsDeclaration':
-        if (isLodashImported(node.moduleReference)) {
-          body[i] = convertLodashImport(node, existingLodashImportDecl);
-          if (!existingLodashImportDecl) {
-            existingLodashImportDecl = body[i];
+        if (node.moduleReference.type === 'TSExternalModuleReference') {
+          if (isLodashImported(node.moduleReference)) {
+            body[i] = convertLodashImport(node, existingLodashImportDecl);
+            if (!existingLodashImportDecl) {
+              existingLodashImportDecl = body[i];
+            }
+          } else {
+            body[i] = convertImportEqualsDeclToCJS(node);
           }
-        } else {
-          body[i] = convertImportEqualsDeclToCJS(node);
         }
         break;
       case 'ImportDeclaration':

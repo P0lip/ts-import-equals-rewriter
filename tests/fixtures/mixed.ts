@@ -7,3 +7,4 @@ import { action, observable, reaction, when } from 'mobx';
 import * as monaco from 'monaco-editor';
 import foo = require('bar');
 import './formatters/markdown';
+import IStandaloneCodeEditor = Editor.IStandaloneCodeEditor;
