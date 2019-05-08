@@ -1,0 +1,25 @@
+{
+  "presets": [
+    [
+      "@babel/preset-env",
+      {
+        "targets": {
+          "node": "10"
+        },
+        "modules": false,
+        "useBuiltIns": "usage"
+      }
+    ]
+  ],
+  "env": {
+    "test": {
+      "plugins": [
+        ["istanbul", {
+          "exclude": [
+            "**/*.test.js"
+          ]
+        }]
+      ]
+    }
+  }
+}
