@@ -31,6 +31,14 @@ export function convertImportEqualsDeclToCJS(decl) {
   ]);
 }
 
+export function convertImportEqualsToType(decl) {
+  return {
+    type: 'TSTypeAliasDeclaration',
+    id: decl.id,
+    typeAnnotation: decl.moduleReference,
+  };
+}
+
 export function appendSpecifiers(decl, specifiers) {
   decl.specifiers.push(
     ...[...specifiers].sort(specifier =>

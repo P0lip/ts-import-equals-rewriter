@@ -2,6 +2,7 @@ import * as recast from 'recast';
 import {
   appendSpecifiers,
   convertImportEqualsDeclToCJS,
+  convertImportEqualsToType,
   convertLodashImport,
   isLodashImported,
   isNamespaceSpecifier,
@@ -19,15 +20,21 @@ export default source => {
   for (const [i, node] of body.entries()) {
     switch (node.type) {
       case 'TSImportEqualsDeclaration':
-        if (node.moduleReference.type === 'TSExternalModuleReference') {
-          if (isLodashImported(node.moduleReference)) {
-            body[i] = convertLodashImport(node, existingLodashImportDecl);
-            if (!existingLodashImportDecl) {
-              existingLodashImportDecl = body[i];
+        switch (node.moduleReference.type) {
+          case 'TSExternalModuleReference':
+            if (isLodashImported(node.moduleReference)) {
+              body[i] = convertLodashImport(node, existingLodashImportDecl);
+              if (!existingLodashImportDecl) {
+                existingLodashImportDecl = body[i];
+              }
+            } else {
+              body[i] = convertImportEqualsDeclToCJS(node);
             }
-          } else {
-            body[i] = convertImportEqualsDeclToCJS(node);
-          }
+            break;
+          case 'TSQualifiedName':
+            body[i] = convertImportEqualsToType(node);
+            break;
+          default:
         }
         break;
       case 'ImportDeclaration':
