@@ -1,6 +1,6 @@
 {
   "name": "ts-import-equals-rewriter",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Convert TSImportEqualsDeclaration to valid ESM or CJS import",
   "keywords": [],
   "homepage": "https://github.com/P0lip/ts-import-equals-rewriter",
